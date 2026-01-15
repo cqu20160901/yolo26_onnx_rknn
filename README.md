@@ -59,17 +59,17 @@ results = model(task='detect', source='./test.jpg', save=True)  # predict on an 
 
 pytorch效果
 
-![在这里插入图片描述](https://i-blog.csdnimg.cn/direct/b866a799d3584c8f9e6e83bde03a5997.jpeg)
+![image](https://github.com/cqu20160901/yolo26_onnx_rknn/blob/main/yolo26n_onnx/test_pytorch_result.jpg)
 
 onnx效果
 
-![在这里插入图片描述](https://i-blog.csdnimg.cn/direct/b7e935734b0942d2b309508f09053a38.jpeg)
+![在这里插入图片描述](https://github.com/cqu20160901/yolo26_onnx_rknn/blob/main/yolo26n_onnx/test_onnx_result.jpg)
 # 4 onnx转rknn
 onnx转rknn[代码链接](https://github.com/cqu20160901/yolo26_onnx_rknn/tree/main/yolo26n_rknn)
 
 转rknn后仿真结果
 
-![在这里插入图片描述](https://i-blog.csdnimg.cn/direct/e25c03b719b14e2d835c3f5420734d64.jpeg)
+![在这里插入图片描述](https://github.com/cqu20160901/yolo26_onnx_rknn/blob/main/yolo26n_rknn/test_rknn_result.jpg)
 
 # 5 rk3588板子测试yolov11模型
 
@@ -101,9 +101,9 @@ cd install/rknn_yolo_demo_Linux
 
 int main(int argc, char **argv)
 {
-    char model_path[256] = "/home/zhangqian/rknn/examples/rknn_yolo26_demo_dfl_open/model/RK3588/yolo26n_80class_ZQ.rknn";
-    char image_path[256] = "/home/zhangqian/rknn/examples/rknn_yolo26_demo_dfl_open/test.jpg";
-    char save_image_path[256] = "/home/zhangqian/rknn/examples/rknn_yolo26_demo_dfl_open/test_result.jpg";
+    char model_path[256] = "/home/zhangqian/rknn/examples/rknn_yolo26_demo_open/model/RK3588/yolo26n_80class_ZQ.rknn";
+    char image_path[256] = "/home/zhangqian/rknn/examples/rknn_yolo26_demo_open/test.jpg";
+    char save_image_path[256] = "/home/zhangqian/rknn/examples/rknn_yolo26_demo_open/test_result.jpg";
 
     detect(model_path, image_path, save_image_path);
     return 0;
