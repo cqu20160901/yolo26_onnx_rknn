@@ -71,7 +71,7 @@ results = model(task='detect', source='./test.jpg', save=True)  # predict on an 
 
 pytorch效果
 
-![在这里插入图片描述](https://i-blog.csdnimg.cn/direct/331a62a8c8b64073bb0a811c50ff15c4.png)
+![在这里插入图片描述](https://github.com/cqu20160901/yolo26_onnx_rknn/blob/main/yolo26n_onnx/test_pytorch_result.jpg)
 
 onnx效果
 
@@ -132,3 +132,4 @@ int main(int argc, char **argv)
 ![在这里插入图片描述](https://i-blog.csdnimg.cn/direct/0c20982eb8974782afcec33ed3bba427.png)
 
 &emsp;&emsp;后处理中代码对于输出80个类别，同样先选择最大类别值，然后再进行反量化，最后只对这一个类别值进行sigmoid，这样后处理的时耗加速很多。最初也是按照对类别每个输出值都反量化和sigmoid，再判断是否大于阈值，有一定的优化。
+
