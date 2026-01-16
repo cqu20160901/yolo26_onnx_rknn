@@ -1,9 +1,12 @@
 # yolo26 部署。
+&emsp;&emsp; 2026年1月15日yolo26 开源了，基于对yolo部署尚且还有的些许热情，还是继续部署搞一下。从2020年yolov5开始，到2025年的yolov13，再到今年2026年的yolo26，用或没有用过每个版本都部署过。自己实际使用的v5、v6、v7、v8，加上这两年没有怎么做单目2D目标检测，从v9及其之后的版本就属于兴趣驱使的去学习了解。
 
 完整代码：包括onnx转rknn和测试代码、rknn板端部署C++代码
 
-[【onnx转rknn和测试代码】](https://github.com/cqu20160901/yolo26_onnx_rknn)
+特别说明：如有侵权告知删除，谢谢。
 
+完整代码：包括onnx转rknn和测试代码、rknn板端部署C++代码
+[【onnx转rknn和测试代码】](https://github.com/cqu20160901/yolo26_onnx_rknn)
 [【rknn板端部署C++代码】](https://github.com/cqu20160901/yolo26_rknn_Cplusplus)
 
 # 1 模型训练
@@ -12,9 +15,9 @@
 
 # 2 导出 yolo26 onnx
 
-导出onnx修改以下几处。
-
+&emsp;&emsp; 导出onnx修改以下几处，和之前的导出yolov8、yolov11、yolov12、yolov13类似，修改输出头代码，增加保存onnx的代码。之前有网友留言问为啥不能基于官方提供的导出onnx，用官方代码导出的onnx对部署板端芯片说时候通用性（可能部分板端芯片不支持后处理中的部分操作）和性能（对部分板端芯片后处理操虽然也在转换成功了，但可能是用cpu做的）不是很友好。
 第一处：修改导出onnx的检测头
+
 
 ![在这里插入图片描述](https://i-blog.csdnimg.cn/direct/45b36003770a4b2bb2d70e194b830193.png)
 
@@ -27,6 +30,11 @@
             y.append(t1)
             y.append(t2)
         return y
+```
+
+```python
+        # 导出 onnx 增加
+        return one2one
 ```
 
 第二处：增加保存onnx代码
@@ -44,7 +52,7 @@
                           verbose=False, input_names=input_names, output_names=output_names, opset_version=11)
         print("======================== convert onnx Finished! .... ")
 ```
-
+&emsp;&emsp; 有网友曾问按照博客导出的onnx，用博客中的代码测试结果不正常，而用博客中提供的onnx结果正常，是由于推理onnx时模型输出的顺序不是"output1、output2、output3、output4、output5、output6"这个顺序，可能是"output2、output1、output4、output3、output6、output5"，后处理代码取的时候调整一下即可，特别是上芯片后的顺序变的可能性更大。最好的办法是打印一下维度，根据输出维度调整一下取值的顺序。
 修改完以上两处，运行以下代码：
 
 ```python
@@ -64,8 +72,12 @@ pytorch效果
 onnx效果
 
 ![在这里插入图片描述](https://github.com/cqu20160901/yolo26_onnx_rknn/blob/main/yolo26n_onnx/test_onnx_result.jpg)
+
+pytorch效果和onnx效果是一致的。
+
 # 4 onnx转rknn
 onnx转rknn[代码链接](https://github.com/cqu20160901/yolo26_onnx_rknn/tree/main/yolo26n_rknn)
+
 
 转rknn后仿真结果
 
@@ -112,10 +124,4 @@ int main(int argc, char **argv)
 
 3）板端效果和时耗
 
-![在这里插入图片描述](https://i-blog.csdnimg.cn/direct/eefc9e3da1084cf1822204f3b0d0af88.jpeg)
-
-![在这里插入图片描述](https://i-blog.csdnimg.cn/direct/897e9840ea334b6ea0ece709b900f8af.png)
-
-这个时耗比较长，毫无疑问很多算子切换到cpu上进行的。
-
-![在这里插入图片描述](https://i-blog.csdnimg.cn/direct/bf1aec2a959d4333bf180f5058b3b1ae.png)
+&emsp;&emsp;后处理中代码对于输出80个类别，同样先选择最大类别值，然后再进行反量化，最后只对这一个类别值进行sigmoid，这样后处理的时耗加速很多。最初也是按照对类别每个输出值都反量化和sigmoi，再判断是否大于阈值，测试后处理时耗30多ms，进行先选最大
