@@ -71,7 +71,7 @@ onnx转rknn[代码链接](https://github.com/cqu20160901/yolo26_onnx_rknn/tree/m
 
 ![在这里插入图片描述](https://github.com/cqu20160901/yolo26_onnx_rknn/blob/main/yolo26n_rknn/test_rknn_result.jpg)
 
-# 5 rk3588板子测试yolov11模型
+# 5 rk3588板子测试yolo26模型
 
 使用的 rknn_toolkit 版本：rknn_toolkit2-2.2.0-cp38-cp38-manylinux_2_17_x86_64.manylinux2014_x86_64.whl
 C++代码中的库和工具链的版本注意对应适配。
