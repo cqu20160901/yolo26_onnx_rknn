@@ -95,7 +95,7 @@ def postprocess(out, img_h, img_w):
                             if cls_val > cls_max:
                                 cls_max = cls_val
                                 cls_index = cl
-                                
+                cls_max = sigmoid(cls_max)        
                 if cls_max > objectThresh:
                     xycw = []
                     xycw.append(reg[0 * mapSize[index][0] * mapSize[index][1] + h * mapSize[index][1] + w])
